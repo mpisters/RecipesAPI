@@ -10,5 +10,11 @@ namespace Recipes.Models
     }
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<Recipe>()
+          .HasMany(recipe => recipe.Ingredients);
+    }
   }
 }

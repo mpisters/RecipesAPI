@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Recipes.Models;
 
 namespace Recipes
 {
@@ -25,6 +27,10 @@ namespace Recipes
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipes", Version = "v1" });
             });
+            services.AddEntityFrameworkNpgsql().AddDbContext<RecipesContext>(opt => 
+                    opt.UseNpgsql(Configuration
+                    .GetConnectionString("PostgresDatabaseUrl")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

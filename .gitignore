@@ -357,4 +357,4 @@ MigrationBackup/
 
 
 .idea/
-*.env
+*.env   

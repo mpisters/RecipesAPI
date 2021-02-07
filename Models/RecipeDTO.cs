@@ -1,10 +1,10 @@
 namespace Recipes.Models
 {
-  public class RecipeDTO
+  public class RecipeDto
   {
-    public long Id { get; set; }
+    public long? Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public IngredientDTO[] Ingredients { get; set; }
+    public IngredientDto[] Ingredients { get; set; }
   }
 }

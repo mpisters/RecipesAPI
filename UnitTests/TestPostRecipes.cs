@@ -1,31 +1,34 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Recipes.Controllers;
 using Recipes.Models;
 using Xunit;
 
 namespace Recipes.UnitTests
 {
-  public class TestPostRecipes
-  {
-    [Fact]
-    public async Task PostRecipeWithoutIngredients()
+    public class TestPostRecipes
     {
-      var mockRecipeSet = new Mock<DbSet<Recipe>>();
-      // var mockIngredientSet = new Mock<DbSet<Ingredient>>();
-      var mockContext = new Mock<RecipesContext>();
+        [Fact]
+        public async Task PostRecipeWithoutIngredients()
+        {
+            // Todo place this in a setup class/fixture
+            var options = new DbContextOptionsBuilder<RecipesContext>()
+                .UseInMemoryDatabase(databaseName: "TestRecipeDatabase")
+                .Options;
+            var recipesContext = new RecipesContext(options);
 
-      mockContext.Setup(m => m.Recipes).Returns(mockRecipeSet.Object);
-      // mockContext.Setup(m => m.Ingredients).Returns(mockIngredientSet.Object);
-      var controller = new RecipesController(mockContext.Object);
-      // var ingredient = new IngredientDto("aardbei", 123, "gr");
-      var ingredientList = new IngredientDto[] { };
+            var controller = new RecipesController(recipesContext);
+            var ingredientList = Array.Empty<IngredientDto>();
 
-      var newRecipe = new RecipeDto("Test recipe", "description test", ingredientList);
-      await controller.PostRecipe(newRecipe);
-      mockRecipeSet.Verify(recipe => recipe.Add(It.IsAny<Recipe>()), Times.Once());
-      mockContext.Verify(m => m.SaveChanges(), Times.Once());
+            var newRecipe = new RecipeDto("Test recipe", "Test description", ingredientList);
+            await controller.PostRecipe(newRecipe);
+            Assert.Single(recipesContext.Recipes.ToListAsync().Result);
+            var addedRecipe = recipesContext.Recipes.FirstOrDefault();
+            Assert.Equal("Test recipe", addedRecipe.Name);
+            Assert.Equal("Test description", addedRecipe.Description);
+            Assert.Empty(addedRecipe.Ingredients);
+        }
     }
-  }
 }

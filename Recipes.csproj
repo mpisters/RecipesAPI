@@ -19,7 +19,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="Moq" Version="4.16.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
@@ -40,6 +39,8 @@
     <_ContentIncludedByDefault Remove="Templates\ViewGenerator\Empty.cshtml" />
     <_ContentIncludedByDefault Remove="Templates\ViewGenerator\List.cshtml" />
     <_ContentIncludedByDefault Remove="Templates\ViewGenerator\_ValidationScriptsPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="UnitTests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="UnitTests\obj\UnitTests.csproj.nuget.dgspec.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,11 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Development.env" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="UnitTests\UnitTests.csproj" />
   </ItemGroup>
-
 </Project>

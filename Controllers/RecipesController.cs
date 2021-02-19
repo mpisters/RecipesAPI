@@ -46,7 +46,17 @@ namespace Recipes.Controllers
       }
     
       var currentRecipe = await _context.Recipes.FindAsync(id);
-      return currentRecipe;
+
+      if (currentRecipe == null)
+      {
+        return NotFound();
+      }
+
+      currentRecipe.Name = updatedRecipe.Name;
+      currentRecipe.Description = updatedRecipe.Description;
+      _context.Recipes.Update(currentRecipe);
+      await _context.SaveChangesAsync();
+      return CreatedAtAction(nameof(GetRecipeById), new {id = currentRecipe.Id}, currentRecipe);
     }
 
     [HttpPost]

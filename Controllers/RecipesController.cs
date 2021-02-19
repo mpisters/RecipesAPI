@@ -38,7 +38,7 @@ namespace Recipes.Controllers
     }
     
     [HttpPatch("{id}")]
-    public async Task<ActionResult<Recipe>> PutRecipe(long id, RecipeDto updatedRecipe)
+    public async Task<ActionResult<Recipe>> PatchRecipe(long id, RecipeDto updatedRecipe)
     {
       if (id != updatedRecipe.Id)
       {
@@ -46,63 +46,6 @@ namespace Recipes.Controllers
       }
     
       var currentRecipe = await _context.Recipes.FindAsync(id);
-      if (currentRecipe == null)
-      {
-        return NotFound();
-      }
-    
-      currentRecipe.Name = updatedRecipe.Name;
-      currentRecipe.Description = updatedRecipe.Description;
-      var ingredients = updatedRecipe.Ingredients;
-      var updatedIngredients = new List<Ingredient>();
-      foreach (var ingredient in ingredients)
-      {
-        
-        if (ingredient.Id == null)
-        {
-          var newIngredient = new Ingredient{
-            Name = ingredient.Name,
-            Amount = ingredient.Amount,
-            Unit = ingredient.Unit
-          };
-          await _context.Ingredients.AddAsync(newIngredient);
-          updatedIngredients.Add(newIngredient);
-        }
-        else
-        {
-          var updatedIngredient = await _context.Ingredients.FindAsync(ingredient.Id);
-          if (updatedIngredient == null)
-          {
-            continue;
-          }
-          updatedIngredient.Amount = ingredient.Amount;
-          updatedIngredient.Name = ingredient.Name;
-          updatedIngredient.Unit = ingredient.Unit;
-          updatedIngredients.Add(updatedIngredient);
-          _context.Ingredients.Update(updatedIngredient);
-        }
-
-        currentRecipe.Ingredients = updatedIngredients;
-      }
-      await _context.SaveChangesAsync();
-      {
-        
-      }
-    
-      _context.Entry(currentRecipe).State = EntityState.Modified;
-    
-      try
-      {
-        await _context.SaveChangesAsync();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!RecipeExists(id))
-        {
-          return NotFound();
-        }
-        throw;
-      }
       return currentRecipe;
     }
 

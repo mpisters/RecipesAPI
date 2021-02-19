@@ -28,7 +28,7 @@ namespace Recipes.UnitTests
 
             var newRecipe = new RecipeDto("Updated recipe", "Updated description", ingredientList);
             ActionResult<Recipe> result = await controller.PatchRecipe(9999, newRecipe);
-            Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<BadRequestResult>(result.Result);
         }
     }
 }

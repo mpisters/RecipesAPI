@@ -54,6 +54,27 @@ namespace Recipes.Controllers
 
       currentRecipe.Name = updatedRecipe.Name;
       currentRecipe.Description = updatedRecipe.Description;
+
+      if (updatedRecipe.Ingredients != null && updatedRecipe.Ingredients.Length > 0)
+      {
+        var newIngredientList = new List<Ingredient>();
+        foreach (var ingredient in updatedRecipe.Ingredients)
+        {
+          if (ingredient.Id == null)
+          {
+            var newIngredient = new Ingredient
+            {
+              Name = ingredient.Name,
+              Amount = ingredient.Amount,
+              Unit = ingredient.Unit
+            };
+            await _context.Ingredients.AddAsync(newIngredient);
+            newIngredientList.Add(newIngredient);
+          } 
+          // ToDo update existing ingredients
+        }
+        currentRecipe.Ingredients = newIngredientList;
+      }
       _context.Recipes.Update(currentRecipe);
       await _context.SaveChangesAsync();
       return CreatedAtAction(nameof(GetRecipeById), new {id = currentRecipe.Id}, currentRecipe);

@@ -19,7 +19,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="Moq" Version="4.16.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
@@ -42,13 +41,6 @@
     <_ContentIncludedByDefault Remove="Templates\ViewGenerator\_ValidationScriptsPartial.cshtml" />
     <_ContentIncludedByDefault Remove="UnitTests\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="UnitTests\obj\UnitTests.csproj.nuget.dgspec.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\appsettings.Development.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\appsettings.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\UnitTests.deps.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\UnitTests.runtimeconfig.dev.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\UnitTests.runtimeconfig.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\UnitTests\obj\project.assets.json" />
-    <_ContentIncludedByDefault Remove="UnitTests\bin\Debug\net5.0\UnitTests\obj\UnitTests.csproj.nuget.dgspec.json" />
   </ItemGroup>
 
   <ItemGroup>

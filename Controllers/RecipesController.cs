@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +35,7 @@ namespace Recipes.Controllers
 
       return recipe;
     }
-    
+
     [HttpPatch("{id}")]
     public async Task<ActionResult<Recipe>> PatchRecipe(long id, RecipeDto updatedRecipe)
     {
@@ -44,7 +43,7 @@ namespace Recipes.Controllers
       {
         return BadRequest();
       }
-    
+
       var currentRecipe = await _context.Recipes.FindAsync(id);
 
       if (currentRecipe == null)
@@ -64,17 +63,32 @@ namespace Recipes.Controllers
           {
             var newIngredient = new Ingredient
             {
-              Name = ingredient.Name,
-              Amount = ingredient.Amount,
-              Unit = ingredient.Unit
+                Name = ingredient.Name,
+                Amount = ingredient.Amount,
+                Unit = ingredient.Unit
             };
             await _context.Ingredients.AddAsync(newIngredient);
             newIngredientList.Add(newIngredient);
-          } 
-          // ToDo update existing ingredients
+          }
+          else
+          {
+            var existingIngredient = await _context.Ingredients.FindAsync(ingredient.Id);
+            if (existingIngredient == null)
+            {
+              continue;
+            }
+
+            existingIngredient.Name = ingredient.Name;
+            existingIngredient.Amount = ingredient.Amount;
+            existingIngredient.Unit = ingredient.Unit;
+            _context.Ingredients.Update(existingIngredient);
+            newIngredientList.Add(existingIngredient);
+          }
         }
+
         currentRecipe.Ingredients = newIngredientList;
       }
+
       _context.Recipes.Update(currentRecipe);
       await _context.SaveChangesAsync();
       return CreatedAtAction(nameof(GetRecipeById), new {id = currentRecipe.Id}, currentRecipe);

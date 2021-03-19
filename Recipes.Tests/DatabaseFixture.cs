@@ -1,10 +1,10 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Recipes.Models;
-using Recipes.UnitTests;
+using Recipes.Tests;
 using Xunit;
 
-namespace Recipes.UnitTests
+namespace Recipes.Tests
 {
     public class DatabaseFixture: IDisposable
     {

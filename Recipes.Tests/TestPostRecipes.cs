@@ -3,9 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Recipes.Controllers;
 using Recipes.Models;
+using Recipes.Tests;
 using Xunit;
 
-namespace Recipes.UnitTests
+namespace Recipes.Recipes.Tests
 {
     
     [Collection("Database collection")]
@@ -15,7 +16,7 @@ namespace Recipes.UnitTests
 
         public TestPostRecipes(DatabaseFixture fixture)
         {
-            this._fixture = fixture;
+            _fixture = fixture;
         }
         [Fact]
         public async Task PostRecipeWithoutIngredients()

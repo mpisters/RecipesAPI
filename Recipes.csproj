@@ -46,8 +46,4 @@
   <ItemGroup>
     <Folder Include="Migrations" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="UnitTests\UnitTests.csproj" />
-  </ItemGroup>
 </Project>

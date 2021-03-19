@@ -5,24 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Recipes.Controllers;
 using Recipes.Models;
+using Recipes.Tests;
 using Xunit;
 
-namespace Recipes.UnitTests
+namespace Recipes.Recipes.Tests
 {
-  [Collection("Database collection")]
   public class TestPatchRecipes
   {
-    private readonly DatabaseFixture _fixture;
-
-    public TestPatchRecipes(DatabaseFixture fixture)
-    {
-      this._fixture = fixture;
-    }
-
+    
     [Fact]
     public async Task TestReturnsBadRequestWhenRecipeIdIsUnknown()
     {
-      var options = _fixture.options;
+      DatabaseFixture fixture = new DatabaseFixture();
+      var options = fixture.options;
       var recipesContext = new RecipesContext(options);
 
       var controller = new RecipesController(recipesContext);
@@ -36,7 +31,8 @@ namespace Recipes.UnitTests
     [Fact]
     public async Task TestReturnsNotFoundWhenRecipeIdIsNotFound()
     {
-      var options = _fixture.options;
+      DatabaseFixture fixture = new DatabaseFixture();
+      var options = fixture.options;
       var recipesContext = new RecipesContext(options);
 
       var controller = new RecipesController(recipesContext);
@@ -50,7 +46,8 @@ namespace Recipes.UnitTests
     [Fact]
     public async Task TestUpdatesRecipeWithoutIngredients()
     {
-      var options = _fixture.options;
+      DatabaseFixture fixture = new DatabaseFixture();
+      var options = fixture.options;
       var recipesContext = new RecipesContext(options);
       var emptyIngredientList = new List<Ingredient>();
       var existingIngredient = new Recipe
@@ -73,7 +70,8 @@ namespace Recipes.UnitTests
     [Fact]
     public async Task TestUpdatesRecipeWithNewIngredients()
     {
-      var options = _fixture.options;
+      DatabaseFixture fixture = new DatabaseFixture();
+      var options = fixture.options;
       var recipesContext = new RecipesContext(options);
 
       // create existing recipe without ingredients
@@ -107,7 +105,8 @@ namespace Recipes.UnitTests
     [Fact]
     public async Task TestUpdatesRecipeWithExistingIngredients()
     {
-      var options = _fixture.options;
+      DatabaseFixture fixture = new DatabaseFixture();
+      var options = fixture.options;
       var recipesContext = new RecipesContext(options);
 
       // add existing ingredients to database

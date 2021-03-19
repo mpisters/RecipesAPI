@@ -1,3 +1,4 @@
+#nullable enable
 namespace Recipes.Models
 {
   public class RecipeDto
@@ -10,8 +11,8 @@ namespace Recipes.Models
     }
 
     public long? Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public IngredientDto[] Ingredients { get; set; }
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public IngredientDto[]? Ingredients { get; set; }
   }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,74 +35,63 @@ namespace Recipes.Controllers
 
       return recipe;
     }
-    
+
     [HttpPatch("{id}")]
-    public async Task<ActionResult<Recipe>> PutRecipe(long id, RecipeDto updatedRecipe)
+    public async Task<ActionResult<Recipe>> PatchRecipe(long id, RecipeDto updatedRecipe)
     {
       if (id != updatedRecipe.Id)
       {
         return BadRequest();
       }
-    
+
       var currentRecipe = await _context.Recipes.FindAsync(id);
+
       if (currentRecipe == null)
       {
         return NotFound();
       }
-    
+
       currentRecipe.Name = updatedRecipe.Name;
       currentRecipe.Description = updatedRecipe.Description;
-      var ingredients = updatedRecipe.Ingredients;
-      var updatedIngredients = new List<Ingredient>();
-      foreach (var ingredient in ingredients)
+
+      if (updatedRecipe.Ingredients != null && updatedRecipe.Ingredients.Length > 0)
       {
-        
-        if (ingredient.Id == null)
+        var newIngredientList = new List<Ingredient>();
+        foreach (var ingredient in updatedRecipe.Ingredients)
         {
-          var newIngredient = new Ingredient{
-            Name = ingredient.Name,
-            Amount = ingredient.Amount,
-            Unit = ingredient.Unit
-          };
-          await _context.Ingredients.AddAsync(newIngredient);
-          updatedIngredients.Add(newIngredient);
-        }
-        else
-        {
-          var updatedIngredient = await _context.Ingredients.FindAsync(ingredient.Id);
-          if (updatedIngredient == null)
+          if (ingredient.Id == null)
           {
-            continue;
+            var newIngredient = new Ingredient
+            {
+                Name = ingredient.Name,
+                Amount = ingredient.Amount,
+                Unit = ingredient.Unit
+            };
+            await _context.Ingredients.AddAsync(newIngredient);
+            newIngredientList.Add(newIngredient);
           }
-          updatedIngredient.Amount = ingredient.Amount;
-          updatedIngredient.Name = ingredient.Name;
-          updatedIngredient.Unit = ingredient.Unit;
-          updatedIngredients.Add(updatedIngredient);
-          _context.Ingredients.Update(updatedIngredient);
+          else
+          {
+            var existingIngredient = await _context.Ingredients.FindAsync(ingredient.Id);
+            if (existingIngredient == null)
+            {
+              continue;
+            }
+
+            existingIngredient.Name = ingredient.Name;
+            existingIngredient.Amount = ingredient.Amount;
+            existingIngredient.Unit = ingredient.Unit;
+            _context.Ingredients.Update(existingIngredient);
+            newIngredientList.Add(existingIngredient);
+          }
         }
 
-        currentRecipe.Ingredients = updatedIngredients;
+        currentRecipe.Ingredients = newIngredientList;
       }
+
+      _context.Recipes.Update(currentRecipe);
       await _context.SaveChangesAsync();
-      {
-        
-      }
-    
-      _context.Entry(currentRecipe).State = EntityState.Modified;
-    
-      try
-      {
-        await _context.SaveChangesAsync();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!RecipeExists(id))
-        {
-          return NotFound();
-        }
-        throw;
-      }
-      return currentRecipe;
+      return CreatedAtAction(nameof(GetRecipeById), new {id = currentRecipe.Id}, currentRecipe);
     }
 
     [HttpPost]
